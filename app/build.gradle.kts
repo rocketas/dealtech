@@ -24,6 +24,8 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+        mavenBom("com.google.cloud:libraries-bom:26.32.0")
+
     }
 }
 
@@ -38,9 +40,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    // Google Cloud Storage Client
+    implementation("com.google.cloud:google-cloud-storage")
+
     // Dependencies for testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
 }
 
 // Configure the Kotlin compiler for Spring
