@@ -62,5 +62,5 @@ tasks.withType<Test> {
 
 // This task is provided by the Spring Boot plugin to create an executable JAR
 tasks.getByName<BootJar>("bootJar") {
-    mainClass.set("com.dealtech.IntA.MainKt") // IMPORTANT: Set this to your main class file
+    mainClass.set("backend.app.MainKt") // IMPORTANT: Set this to your main class file
 }

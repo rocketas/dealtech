@@ -1,6 +1,5 @@
-package com.dealtech.IntA.db
+package com.dealtech.db
 
-import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue

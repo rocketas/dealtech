@@ -1,4 +1,4 @@
-package com.dealtech.IntA.db
+package com.dealtech.db
 
 import com.google.cloud.storage.Blob
 import com.google.cloud.storage.BlobId

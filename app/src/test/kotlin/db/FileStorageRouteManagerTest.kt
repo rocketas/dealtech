@@ -1,17 +1,13 @@
-package com.dealtech.IntA.db
+package com.dealtech.db
 
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
-import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(FileStorageRouteManager::class)
 class FileStorageRouteManagerTest {
@@ -26,11 +22,11 @@ class FileStorageRouteManagerTest {
     fun `GET returns failure from fileStorage fails`() {
         val fileName = "doc.txt"
         val content = "hello".toByteArray()
-        val failed_mocked_response = ReadFileResponse(
+        val failedMockedResponse = ReadFileResponse(
             content = content,
             status = Status(success = false, errorMessage = null, errorCode = null)
         )
-        `when`(cloudStorage.readFile(ReadFileRequest(fileName))).thenReturn(failed_mocked_response)
+        `when`(cloudStorage.readFile(ReadFileRequest(fileName))).thenReturn(failedMockedResponse)
 
         mockMvc.perform(
             get("/api/files/read")

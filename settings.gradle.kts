@@ -22,4 +22,4 @@ plugins {
 include(":app")
 include(":utils")
 
-rootProject.name = "IntA"
+rootProject.name = "backend"

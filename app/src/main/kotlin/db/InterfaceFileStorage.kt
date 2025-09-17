@@ -1,4 +1,4 @@
-package com.dealtech.IntA.db;
+package com.dealtech.db
 
 
 public data class Status(val success: Boolean, val errorMessage: String?, val errorCode: String?);

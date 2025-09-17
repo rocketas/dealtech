@@ -1,4 +1,5 @@
-package com.dealtech.IntA
+package com.dealtech
+
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
