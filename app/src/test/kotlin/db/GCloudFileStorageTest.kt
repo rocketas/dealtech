@@ -1,38 +1,42 @@
 package com.dealtech.IntA.db
 
+import com.google.cloud.storage.Blob
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlin.test.assertFalse
 
 class GCloudFileStorageTest {
 
-    private val storage: InterfaceFileStorage = GCloudFileStorage()
+    private val storage = mock(Storage::class.java)
+    private val bucket = "dealtech-testing-bucket"
+    private val gcs = GCloudFileStorage(bucketName = bucket, storage = storage)
 
     @Test
-    fun `readFile returns failure status and null content`() {
-        val request : ReadFileRequest = ReadFileRequest(fileName = "any-file.txt");
+    fun `readFile returns success and bytes when object exists`() {
+        val name = "hello.txt"
+        val blobId = BlobId.of(bucket, name)
+        val blob = mock(Blob::class.java)
+        val data = "hello".toByteArray()
+        `when`(storage.get(eq(blobId))).thenReturn(blob)
+        `when`(blob.blobId).thenReturn(blobId)
+        `when`(storage.readAllBytes(eq(blobId))).thenReturn(data)
 
-        val response : ReadFileResponse = storage.readFile(request);
+        val resp = gcs.readFile(ReadFileRequest(name))
 
-        val expectedResponse : ReadFileResponse  = ReadFileResponse(
-            content = null,
-            status = Status(false, "Reading Files is not supported", "N/A")
-        );
-        assertEquals(response, expectedResponse);
-    }
-
-    @Test
-    fun `writeFile returns failure status`() {
-        val data = "hello".toByteArray();
-        val request = WriteFileRequest(fileName = "any-file.txt", data = data);
-
-        val response = storage.writeFile(request);
-
-        val expectedResponse = WriteFileResponse(
-            status = Status(false, "Writing Files is not supported", "N/A")
-        );
-        assertEquals(response, expectedResponse);
-
+        assertTrue(resp.status.success)
+        assertNull(resp.status.errorMessage)
+        assertNull(resp.status.errorCode)
+        assertNotNull(resp.content)
+        assertEquals("hello", String(resp.content!!))
     }
 }
