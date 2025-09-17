@@ -1,5 +1,6 @@
 package com.dealtech.db
 
+import org.slf4j.LoggerFactory
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpHeaders
@@ -12,8 +13,11 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/api/files")
 class FileStorageRouteManager(private val cloudStorage: InterfaceFileStorage) {
 
+    private val logger = LoggerFactory.getLogger(GCloudFileStorage::class.java)
+
     @GetMapping("/read")
     fun readFile(@RequestParam fileName: String): ResponseEntity<Resource> {
+        logger.info("Received http read request for file: {}", fileName);
         val resp = cloudStorage.readFile(ReadFileRequest(fileName));
         if (!resp.status.success || resp.content == null) {
             return ResponseEntity.notFound().build();

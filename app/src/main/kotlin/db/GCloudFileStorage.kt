@@ -5,10 +5,13 @@ import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Repository
 
+@Repository
 class GCloudFileStorage(
-    val bucketName: String,
-    val storage: Storage = StorageOptions.getDefaultInstance().service
+    @Value("\${gcloud.filestorage.bucket-name}") val bucketName: String,
+    val storage : Storage =  StorageOptions.getDefaultInstance().service
 ) : InterfaceFileStorage {
 
     private val logger = LoggerFactory.getLogger(GCloudFileStorage::class.java)
@@ -16,6 +19,7 @@ class GCloudFileStorage(
     override fun readFile(request: ReadFileRequest): ReadFileResponse {
 
         logger.info("Received realFile request: {}", request);
+        logger.info("Will attempt to read file from bucket: {}", bucketName);
         return try {
             val blob = storage.get(BlobId.of(bucketName, request.fileName))
                 ?: return ReadFileResponse(
